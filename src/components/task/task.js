@@ -9,8 +9,7 @@ const Task = ({ label, created }) => {
       <label>
         <span className="description">{label}</span>
         <span className="created">
-          created {formatDistanceToNow(new Date(), { includeSeconds: true })}{" "}
-          ago
+          created {formatDistanceToNow(created, { includeSeconds: true })} ago
         </span>
       </label>
       <button className="icon icon-edit"></button>

@@ -5,18 +5,25 @@ import TaskList from "../task-list";
 import Footer from "../footer";
 
 const App = () => {
-  const date1 = new Date();
-  const date2 = new Date();
-  const date3 = new Date();
   const todoData = [
     {
       label: "Completed task",
-      created: date1,
+      created: new Date(),
       className: "completed",
       id: 1,
     },
-    { label: "Editing task", created: date2, className: "editing", id: 2 },
-    { label: "Active task", created: date3, className: null, id: 3 },
+    {
+      label: "Editing task",
+      created: new Date(),
+      className: "editing",
+      id: 2,
+    },
+    {
+      label: "Active task",
+      created: new Date(),
+      className: null,
+      id: 3,
+    },
   ];
 
   return (
