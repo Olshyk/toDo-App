@@ -4,16 +4,11 @@ import Task from "../task";
 
 import "./task-list.css";
 
-const TaskList = ({ todos }) => {
+const TaskList = ({ todos, onDeleted }) => {
   const elements = todos.map((item) => {
-    const { id, className, ...itemProps } = item;
+    const { id } = item;
 
-    return (
-      <li key={id} className={className}>
-        <Task {...itemProps} />
-        <input type="text" className="edit" defaultValue="Editing task" />
-      </li>
-    );
+    return <Task key={id} {...item} onDeleted={() => onDeleted(id)} />;
   });
 
   return <ul className="todo-list">{elements}</ul>;
