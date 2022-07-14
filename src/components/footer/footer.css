@@ -42,6 +42,10 @@ html .clear-completed:active {
 	text-decoration: underline;
 }
 
+.filters li button.selected {
+	border-color: rgba(175, 47, 47, 0.2);
+}
+
 
 @media (max-width: 430px) {
 	.footer {
