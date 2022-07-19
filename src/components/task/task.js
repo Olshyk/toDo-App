@@ -1,66 +1,76 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { formatDistanceToNow } from 'date-fns';
 
-import PropTypes from "prop-types";
-
-import "./task.css";
-
-import { formatDistanceToNow } from "date-fns";
+import './task.css';
 
 export default class Task extends Component {
   state = {
-    label: this.props.label,
+    // eslint-disable-next-line react/destructuring-assignment
+    text: this.props.label,
     date: new Date(),
   };
 
   static defaultProps = {
-    label: "Drink Coffee",
+    label: 'Drink Coffee',
     completed: false,
     editing: false,
     onDeleted: () => {},
     onCompleted: () => {},
     onEdit: () => {},
+    onEdited: () => {},
   };
 
   static propTypes = {
     label: PropTypes.string,
-    comleted: PropTypes.bool,
+    completed: PropTypes.bool,
     editing: PropTypes.bool,
     onDeleted: PropTypes.func,
     onCompleted: PropTypes.func,
     onEdit: PropTypes.func,
+    onEdited: PropTypes.func,
     id: PropTypes.number.isRequired,
   };
 
+  componentDidMount() {
+    this.update = setInterval(() => {
+      this.setState({
+        // eslint-disable-next-line react/no-unused-state
+        time: new Date(),
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.update);
+  }
+
   onLabelChange = (e) => {
     this.setState({
-      label: e.target.value,
+      text: e.target.value,
     });
   };
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onEdited(this.state.label, this.props.id);
+    const { onEdited, id, label } = this.props;
+    const { text } = this.state;
+    onEdited(text, id);
     this.setState({
-      label: this.props.label,
+      text: label,
     });
   };
 
   render() {
-    const {
-      label,
-      onDeleted,
-      onCompleted,
-      completed,
-      editing,
-      onEdit,
-    } = this.props;
+    const { label, onDeleted, onCompleted, completed, editing, onEdit } = this.props;
+    const { text, date } = this.state;
 
-    let classNames = "";
+    let classNames = '';
     if (completed) {
-      classNames += " completed";
+      classNames += ' completed';
     }
     if (editing) {
-      classNames += " editing";
+      classNames += ' editing';
     }
 
     return (
@@ -69,22 +79,13 @@ export default class Task extends Component {
           <input className="toggle" type="checkbox" onClick={onCompleted} />
           <label>
             <span className="description">{label}</span>
-            <span className="created">
-              created{" "}
-              {formatDistanceToNow(this.state.date, { includeSeconds: true })}{" "}
-              ago
-            </span>
+            <span className="created">created {formatDistanceToNow(date, { includeSeconds: true })} ago</span>
           </label>
-          <button className="icon icon-edit" onClick={onEdit}></button>
-          <button className="icon icon-destroy" onClick={onDeleted}></button>
+          <button className="icon icon-edit" type="button" label="edit" onClick={onEdit} />
+          <button className="icon icon-destroy" type="button" label="delete" onClick={onDeleted} />
         </div>
         <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            className="edit"
-            value={this.state.label}
-            onChange={this.onLabelChange}
-          />
+          <input type="text" className="edit" value={text} onChange={this.onLabelChange} />
         </form>
       </li>
     );

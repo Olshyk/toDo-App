@@ -1,12 +1,11 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import PropTypes from "prop-types";
+import Task from '../task/index';
 
-import Task from "../task";
+import './task-list.css';
 
-import "./task-list.css";
-
-const TaskList = ({ todos, onDeleted, onCompleted, onEdit, onEdited }) => {
+function TaskList({ todos, onDeleted, onCompleted, onEdit, onEdited }) {
   TaskList.defaultProps = {
     todos: [],
     onDeleted: () => {},
@@ -16,7 +15,7 @@ const TaskList = ({ todos, onDeleted, onCompleted, onEdit, onEdited }) => {
   };
 
   TaskList.propTypes = {
-    todos: PropTypes.array,
+    todos: PropTypes.instanceOf(Array),
     onDeleted: PropTypes.func,
     onCompleted: PropTypes.func,
     onEdit: PropTypes.func,
@@ -39,6 +38,6 @@ const TaskList = ({ todos, onDeleted, onCompleted, onEdit, onEdited }) => {
   });
 
   return <ul className="todo-list">{elements}</ul>;
-};
+}
 
 export default TaskList;

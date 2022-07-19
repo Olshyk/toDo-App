@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import PropTypes from "prop-types";
-
-import "./new-task-form.css";
+import './new-task-form.css';
 
 export default class NewTaskForm extends Component {
   state = {
-    label: "",
+    label: '',
   };
 
   static defaultProps = {
@@ -25,22 +24,25 @@ export default class NewTaskForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.onAdded(this.state.label);
+    const { onAdded } = this.props;
+    const { label } = this.state;
+    onAdded(label);
     this.setState({
-      label: "",
+      label: '',
     });
   };
 
   render() {
+    const { label } = this.state;
+
     return (
       <form onSubmit={this.onSubmit}>
         <input
           type="text"
           className="new-todo"
           onChange={this.onLabelChange}
-          value={this.state.label}
+          value={label}
           placeholder="What needs to be done?"
-          autoFocus
         />
       </form>
     );

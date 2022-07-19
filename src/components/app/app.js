@@ -1,52 +1,22 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import "./app.css";
+import './app.css';
 
-import NewTaskForm from "../new-task-form";
-import TaskList from "../task-list";
-import Footer from "../footer";
+import NewTaskForm from '../new-task-form/index';
+import TaskList from '../task-list/index';
+import Footer from '../footer/index';
 
 export default class App extends Component {
   maxId = 0;
 
   state = {
     todoData: [
-      this.createTodoItem("Drink Coffee"),
-      this.createTodoItem("Make App"),
-      this.createTodoItem("Have A Lunch"),
+      this.createTodoItem('Drink Coffee'),
+      this.createTodoItem('Make App'),
+      this.createTodoItem('Have A Lunch'),
     ],
-    filter: "all",
+    filter: 'all',
   };
-
-  createTodoItem(label) {
-    return {
-      label,
-      completed: false,
-      editing: false,
-      id: this.maxId++,
-    };
-  }
-
-  toggleProperty(array, id, propName) {
-    return [...array].reduce((acc, cur) => {
-      if (cur.id === id) cur[propName] = !cur[propName];
-      acc.push(cur);
-      return acc;
-    }, []);
-  }
-
-  filter(items, filter) {
-    switch (filter) {
-      case "all":
-        return items;
-      case "active":
-        return items.filter((item) => !item.completed);
-      case "completed":
-        return items.filter((item) => item.completed);
-      default:
-        return items;
-    }
-  }
 
   onFilterChange = (filter) => {
     this.setState({ filter });
@@ -55,7 +25,7 @@ export default class App extends Component {
   onCompleted = (id) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: this.toggleProperty(todoData, id, "completed"),
+        todoData: this.toggleProperty(todoData, id, 'completed'),
       };
     });
   };
@@ -63,7 +33,7 @@ export default class App extends Component {
   onEdit = (id) => {
     this.setState(({ todoData }) => {
       return {
-        todoData: this.toggleProperty(todoData, id, "editing"),
+        todoData: this.toggleProperty(todoData, id, 'editing'),
       };
     });
   };
@@ -92,11 +62,7 @@ export default class App extends Component {
 
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id);
-      const newArr = [
-        ...todoData.slice(0, idx),
-        newItem,
-        ...todoData.slice(idx + 1),
-      ];
+      const newArr = [...todoData.slice(0, idx), newItem, ...todoData.slice(idx + 1)];
 
       return {
         todoData: newArr,
@@ -111,6 +77,38 @@ export default class App extends Component {
       };
     });
   };
+
+  toggleProperty(array, id, propName) {
+    return array.reduce((acc, cur) => {
+      const newItem = { ...cur };
+      if (cur.id === id) newItem[propName] = !cur[propName];
+      acc.push(newItem);
+      return acc;
+    }, []);
+  }
+
+  filter(items, filter) {
+    switch (filter) {
+      // eslint-disable-next-line indent
+      case 'all':
+        return items;
+      case 'active':
+        return items.filter((item) => !item.completed);
+      case 'completed':
+        return items.filter((item) => item.completed);
+      default:
+        return items;
+    }
+  }
+
+  createTodoItem(label) {
+    return {
+      label,
+      completed: false,
+      editing: false,
+      id: this.maxId++,
+    };
+  }
 
   render() {
     const { todoData, filter } = this.state;
